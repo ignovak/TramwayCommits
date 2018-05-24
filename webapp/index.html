@@ -10,6 +10,9 @@
   td:nth-child(1), td:nth-child(2), td:nth-child(3) {
     width: 100px;
   }
+  [disabled] {
+    opacity: .2;
+  }
 </style>
 
 <div class="card" id="app">
@@ -17,12 +20,15 @@
     <div class="form-check form-check-inline">
       <label class="form-check-label"><input type="checkbox" v-model="expand"> Expand all</label>
     </div>
-    <div v-for="item in data">
-      <details :open="expand">
+    <div class="form-check form-check-inline">
+      <label class="form-check-label"><input type="checkbox" v-model="hideDismissed"> Hide dismissed</label>
+    </div>
+      <details v-for="item in data" :open="expand" :disabled="item.isDismissed" :hidden="hideDismissed && item.isDismissed">
         <summary class="h3">
           {{ item.package }}
         </summary>
         <table class="table table-hover">
+          <a href="#" @click="click($event, item)">Dismiss package</a>
           <tr v-for="commit in item.commits">
             <td>
               <a :href="commitUrl(item.package, commit.commit)">{{ commit.commit }}</a>
@@ -33,7 +39,6 @@
           </tr>
         </table>
       </details>
-    </div>
   </div>
 </div>
 

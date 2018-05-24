@@ -2,17 +2,23 @@ function fetchData (url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
-    xhr.addEventListener('load', _ => resolve(xhr.response));
+    xhr.addEventListener('load', _ => resolve(JSON.parse(xhr.response)));
     xhr.send();
   });
 }
 
-fetchData('/tramway_commits.json').then(_ => {
-  const data = Object.entries(JSON.parse(_)).map(([package, commits]) => {
+Promise.all([
+  fetchData('/tramway_commits.json'),
+  fetchData('/amends.json')
+]).then(([commitData, amendData]) => {
+  const rejectedPackages = new Set(amendData.map(_ => _.package));
+  const data = Object.entries(commitData)
+    .map(([package, commits]) => {
       commits.forEach(_ => _.date = _.date.replace(/ .*/, ''));
       return {
         package,
-        commits
+        commits,
+        isDismissed: rejectedPackages.has(package)
       };
     })
     .sort((a, b) => a.package.localeCompare(b.package));
@@ -21,9 +27,17 @@ fetchData('/tramway_commits.json').then(_ => {
     el: '#app',
     data: {
       data: data,
-      expand: false
+      expand: false,
+      hideDismissed: true
     },
     methods: {
+      click: (e, item) => {
+        e.preventDefault();
+        fetchData('/dismiss/package/' + item.package).then(_ => {
+          item.isDismissed = true;
+          app.hideDismissed = false;
+        });
+      },
       commitUrl: (package, commit) => `https://code.amazon.com/packages/${package}/commits/${commit}`
     }
   });
