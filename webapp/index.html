@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title>Tramway Commits</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+<style>
+  summary:focus {
+    outline: none;
+  }
+  td:nth-child(1), td:nth-child(2), td:nth-child(3) {
+    width: 100px;
+  }
+</style>
+
+<div class="card" id="app">
+  <div class="card-body">
+    <div class="form-check form-check-inline">
+      <label class="form-check-label"><input type="checkbox" v-model="expand"> Expand all</label>
+    </div>
+    <div v-for="item in data">
+      <details :open="expand">
+        <summary class="h3">
+          {{ item.package }}
+        </summary>
+        <table class="table table-hover">
+          <tr v-for="commit in item.commits">
+            <td>
+              <a :href="commitUrl(item.package, commit.commit)">{{ commit.commit }}</a>
+            </td>
+            <td>{{ commit.author }}</td>
+            <td>{{ commit.date }}</td>
+            <td>{{ commit.description }}</td>
+          </tr>
+        </table>
+      </details>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.min.js"></script>
+<script src="main.js"></script>
