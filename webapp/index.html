@@ -21,14 +21,16 @@
       <label class="form-check-label"><input type="checkbox" v-model="expand"> Expand all</label>
     </div>
     <div class="form-check form-check-inline">
-      <label class="form-check-label"><input type="checkbox" v-model="hideDismissed"> Hide dismissed</label>
+      <label class="form-check-label"><input type="checkbox" v-model="hideRemoved"> Hide removed</label>
     </div>
-      <details v-for="item in data" :open="expand" :disabled="item.isDismissed" :hidden="hideDismissed && item.isDismissed">
+      <details v-for="item in data" :open="expand" :disabled="item.isRemoved" :hidden="hideRemoved && item.isRemoved">
         <summary class="h3">
           {{ item.package }}
         </summary>
         <table class="table table-hover">
-          <a href="#" @click="click($event, item)">Dismiss package</a>
+          <div class="form-check form-check-inline">
+            <label class="form-check-label"><input type="checkbox" v-model="item.isRemoved" @change="change(item)"> Is removed</label>
+          </div>
           <tr v-for="commit in item.commits">
             <td>
               <a :href="commitUrl(item.package, commit.commit)">{{ commit.commit }}</a>

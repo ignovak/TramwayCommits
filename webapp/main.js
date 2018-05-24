@@ -11,14 +11,21 @@ Promise.all([
   fetchData('/tramway_commits.json'),
   fetchData('/amends.json')
 ]).then(([commitData, amendData]) => {
-  const rejectedPackages = new Set(amendData.map(_ => _.package));
+  const rejectedPackages = new Set();
+  amendData.forEach(_ => {
+    if (_.action == 'remove') {
+      rejectedPackages.add(_.package);
+    } else {
+      rejectedPackages.delete(_.package);
+    }
+  });
   const data = Object.entries(commitData)
     .map(([package, commits]) => {
       commits.forEach(_ => _.date = _.date.replace(/ .*/, ''));
       return {
         package,
         commits,
-        isDismissed: rejectedPackages.has(package)
+        isRemoved: rejectedPackages.has(package)
       };
     })
     .sort((a, b) => a.package.localeCompare(b.package));
@@ -28,14 +35,12 @@ Promise.all([
     data: {
       data: data,
       expand: false,
-      hideDismissed: true
+      hideRemoved: true
     },
     methods: {
-      click: (e, item) => {
-        e.preventDefault();
-        fetchData('/dismiss/package/' + item.package).then(_ => {
-          item.isDismissed = true;
-          app.hideDismissed = false;
+      change: item => {
+        fetchData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
+          app.hideRemoved = false;
         });
       },
       commitUrl: (package, commit) => `https://code.amazon.com/packages/${package}/commits/${commit}`
