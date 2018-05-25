@@ -4,15 +4,6 @@ if (location.href.startsWith('https')) {
 
 function fetchData (url) {
   return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.addEventListener('load', _ => resolve(JSON.parse(xhr.response)));
-    xhr.send();
-  });
-}
-
-function sendData (url) {
-  return new Promise((resolve, reject) => {
     const script = document.createElement('script');
     const callback = 'callback' + +new Date + (Math.random() * 1000).toFixed();
     script.src = 'http://localhost:8568' + url + '?callback=' + callback;
@@ -33,7 +24,7 @@ const app = new Vue({
   },
   methods: {
     change: item => {
-      sendData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
+      fetchData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
         app.hideRemoved = false;
       });
     },
@@ -51,8 +42,8 @@ const app = new Vue({
 let data;
 
 Promise.all([
-  fetchData('tramway_commits.json'),
-  sendData('/amends.json')
+  fetchData('/tramway_commits.json'),
+  fetchData('/amends.json')
 ]).then(([commitData, amendData]) => {
   const rejectedPackages = new Set();
   amendData.forEach(_ => {
