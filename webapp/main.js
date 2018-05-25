@@ -17,6 +17,35 @@ function sendData (url) {
   });
 }
 
+const app = new Vue({
+  el: '#app',
+  data: {
+    data: [],
+    expand: false,
+    hideRemoved: true,
+    filters: {
+      username: 'novakin'
+    }
+  },
+  methods: {
+    change: item => {
+      sendData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
+        app.hideRemoved = false;
+      });
+    },
+    commitUrl: (package, commit) => `https://code.amazon.com/packages/${package}/commits/${commit}`,
+    update: function () {
+      this.data = data
+        .filter(_ => {
+          if (!this.filters.username) return true;
+          return _.commits.some(_ => _.author == this.filters.username);
+        });
+    }
+  }
+});
+
+let data;
+
 Promise.all([
   fetchData('/tramway_commits.json'),
   fetchData('/amends.json')
@@ -29,7 +58,7 @@ Promise.all([
       rejectedPackages.delete(_.package);
     }
   });
-  const data = Object.entries(commitData)
+  data = Object.entries(commitData)
     .map(([package, commits]) => {
       commits.forEach(_ => _.date = _.date.replace(/ .*/, ''));
       return {
@@ -40,21 +69,6 @@ Promise.all([
     })
     .sort((a, b) => a.package.localeCompare(b.package));
 
-  const app = new Vue({
-    el: '#app',
-    data: {
-      data: data,
-      expand: false,
-      hideRemoved: true
-    },
-    methods: {
-      change: item => {
-        sendData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
-          app.hideRemoved = false;
-        });
-      },
-      commitUrl: (package, commit) => `https://code.amazon.com/packages/${package}/commits/${commit}`
-    }
-  });
+  app.update();
 
 });

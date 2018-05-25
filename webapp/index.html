@@ -23,6 +23,12 @@
     <div class="form-check form-check-inline">
       <label class="form-check-label"><input type="checkbox" v-model="hideRemoved"> Hide removed</label>
     </div>
+    <div class="form-group row">
+      <label for="text-filter" class="col-3 col-form-label">Filter by username</label>
+      <div class="col-9">
+        <input class="form-control" id="text-filter" placeholder="Type text..." v-model="filters.username" v-on:input="update">
+      </div>
+    </div>
       <details v-for="item in data" :open="expand" :disabled="item.isRemoved" :hidden="hideRemoved && item.isRemoved">
         <summary class="h3">
           {{ item.package }}
