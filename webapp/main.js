@@ -24,7 +24,7 @@ const app = new Vue({
     expand: false,
     hideRemoved: true,
     filters: {
-      username: 'novakin'
+      username: ''
     }
   },
   methods: {
@@ -48,7 +48,7 @@ let data;
 
 Promise.all([
   fetchData('/tramway_commits.json'),
-  fetchData('/amends.json')
+  sendData('/amends.json')
 ]).then(([commitData, amendData]) => {
   const rejectedPackages = new Set();
   amendData.forEach(_ => {
