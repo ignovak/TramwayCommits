@@ -1,3 +1,7 @@
+if (location.href.startsWith('https')) {
+  location.href = location.href.replace(/^https/, 'http');
+}
+
 function fetchData (url) {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
@@ -47,7 +51,7 @@ const app = new Vue({
 let data;
 
 Promise.all([
-  fetchData('/tramway_commits.json'),
+  fetchData('tramway_commits.json'),
   sendData('/amends.json')
 ]).then(([commitData, amendData]) => {
   const rejectedPackages = new Set();
