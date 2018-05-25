@@ -7,6 +7,16 @@ function fetchData (url) {
   });
 }
 
+function sendData (url) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    const callback = 'callback' + +new Date + (Math.random() * 1000).toFixed();
+    script.src = 'http://localhost:8568' + url + '?callback=' + callback;
+    window[callback] = _ => resolve(_);
+    document.body.appendChild(script);
+  });
+}
+
 Promise.all([
   fetchData('/tramway_commits.json'),
   fetchData('/amends.json')
@@ -39,7 +49,7 @@ Promise.all([
     },
     methods: {
       change: item => {
-        fetchData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
+        sendData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
           app.hideRemoved = false;
         });
       },
