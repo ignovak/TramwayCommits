@@ -61,8 +61,7 @@ Promise.all([
         commits,
         isRemoved: rejectedPackages.has(package)
       };
-    })
-    .sort((a, b) => a.package.localeCompare(b.package));
+    });
 
   app.update();
 
