@@ -23,10 +23,13 @@ const app = new Vue({
     }
   },
   methods: {
-    change: item => {
+    togglePackage: item => {
       fetchData(`/${ item.isRemoved ? 'remove' : 'restore' }/package/` + item.package).then(_ => {
         app.hideRemoved = false;
       });
+    },
+    toggleCommit: commit => {
+      fetchData(`/${ commit.isRemoved ? 'remove' : 'restore' }/commit/` + commit.commit);
     },
     commitUrl: (package, commit) => `https://code.amazon.com/packages/${package}/commits/${commit}`,
     update: function () {
@@ -46,16 +49,21 @@ Promise.all([
   fetchData('/amends.json')
 ]).then(([commitData, amendData]) => {
   const rejectedPackages = new Set();
+  const rejectedCommits = new Set();
   amendData.forEach(_ => {
+    const [set, item] = _.package ? [rejectedPackages, _.package] : [rejectedCommits, _.commit];
     if (_.action == 'remove') {
-      rejectedPackages.add(_.package);
+      set.add(item);
     } else {
-      rejectedPackages.delete(_.package);
+      set.delete(item);
     }
   });
   data = Object.entries(commitData)
     .map(([package, commits]) => {
-      commits.forEach(_ => _.date = _.date.replace(/ .*/, ''));
+      commits.forEach(_ => {
+        _.date = _.date.replace(/ .*/, '')
+        _.isRemoved = rejectedCommits.has(_.commit);
+      });
       return {
         package,
         commits,
