@@ -5,8 +5,12 @@ import PackageCard from './components/PackageCard';
 import './App.css';
 
 class App extends Component {
-  onChange(e) {
-    this.props.dispatch(uiActions.toggleCards(e.target.checked));
+  toggleExpandCards(e) {
+    this.props.dispatch(uiActions.toggleExpandCards(e.target.checked));
+  }
+
+  toggleRemovedPackages(e) {
+    this.props.dispatch(uiActions.toggleRemovedPackages(e.target.checked));
   }
 
   render() {
@@ -15,11 +19,11 @@ class App extends Component {
         <div className="card-body">
           <div className="form-check form-check-inline">
             <label className="form-check-label">
-              <input type="checkbox" defaultChecked={this.props.isExpanded} onChange={this.onChange.bind(this)} /> Expand all
+              <input type="checkbox" defaultChecked={this.props.isExpanded} onChange={this.toggleExpandCards.bind(this)} /> Expand all
             </label>
           </div>
           <div className="form-check form-check-inline">
-            <label className="form-check-label"><input type="checkbox" defaultChecked={this.hideRemoved} /> Hide removed</label>
+            <label className="form-check-label"><input type="checkbox" defaultChecked={this.showRemoved} onChange={this.toggleRemovedPackages.bind(this)} /> Show removed</label>
           </div>
           <div className="form-group row">
             <label htmlFor="text-filter" className="col-3 col-form-label">Filter by username</label>
@@ -27,7 +31,7 @@ class App extends Component {
               <input className="form-control" placeholder="Type text..." v-model="filters.username" input="update" />
             </div>
           </div>
-          {this.props.data.map(({ packageName, commits, isRemoved }) => <PackageCard key={packageName} name={packageName} data={commits} isRemoved={isRemoved} />)}
+          {this.props.data.map(data => <PackageCard {...data} key={data.packageName} />)}
         </div>
       </div>
     );

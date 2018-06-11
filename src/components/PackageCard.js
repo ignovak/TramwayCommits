@@ -6,15 +6,15 @@ import CommitLine from './CommitLine';
 
 class PackageCard extends Component {
   onChange(e) {
-    this.props.dispatch(packageActions.togglePackage(this.props.name, e.target.checked));
+    this.props.dispatch(packageActions.togglePackage(this.props.packageName, e.target.checked));
   }
 
   render() {
     return (
-      <Panel expanded={this.props.isExpanded}>
+      <Panel expanded={this.props.isExpanded} hidden={!this.props.showRemoved && this.props.isRemoved && !this.props.recentlyUpdated} onToggle={_ => _}>
         <Panel.Heading>
           <Panel.Title>
-            <Panel.Toggle className="h3" componentClass="a">{this.props.name}</Panel.Toggle>
+            <Panel.Toggle className="h3" componentClass="a">{this.props.packageName}</Panel.Toggle>
             <label className="form-check-label">
               <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Is removed
             </label>
@@ -24,7 +24,7 @@ class PackageCard extends Component {
           <Panel.Body>
             <Table hover>
               <tbody>
-                {this.props.data.map(_ => <CommitLine key={_.commit} packageName={this.props.name} data={_} />)}
+                {this.props.commits.map(_ => <CommitLine key={_.commit} packageName={this.props.packageName} data={_} />)}
               </tbody>
             </Table>
           </Panel.Body>
@@ -34,4 +34,4 @@ class PackageCard extends Component {
   }
 }
 
-export default connect(state => ({ isExpanded: state.ui.isExpanded }))(PackageCard);
+export default connect(state => state.ui)(PackageCard);
