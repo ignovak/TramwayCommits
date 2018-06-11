@@ -44,7 +44,7 @@ Promise.all([
       set.delete(item);
     }
   });
-  const data = Object.entries(commitData).slice(0, 10)
+  const data = Object.entries(commitData).slice(0, 1000)
     .map(([packageName, commits]) => {
       commits.forEach(_ => {
         _.date = _.date.replace(/ .*/, '')

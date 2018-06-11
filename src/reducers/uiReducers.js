@@ -1,5 +1,10 @@
 export default (state = {}, action) => {
   switch (action.type) {
+    case 'FILTER_BY_AUTHOR':
+      return {
+        ...state,
+        author: action.author
+      };
     case 'TOGGLE_EXPAND_CARDS':
       return {
         ...state,

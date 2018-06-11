@@ -11,7 +11,7 @@ class PackageCard extends Component {
 
   render() {
     return (
-      <Panel expanded={this.props.isExpanded} hidden={!this.props.showRemoved && this.props.isRemoved && !this.props.recentlyUpdated} onToggle={_ => _}>
+      <Panel expanded={this.props.isExpanded} onToggle={_ => _}>
         <Panel.Heading>
           <Panel.Title>
             <Panel.Toggle className="h3" componentClass="a">{this.props.packageName}</Panel.Toggle>
