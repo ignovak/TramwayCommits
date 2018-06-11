@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as uiActions from './actions/uiActions';
+import { Typeahead } from 'react-bootstrap-typeahead';
 import PackageCard from './components/PackageCard';
 import './App.css';
 
@@ -13,8 +14,8 @@ class App extends Component {
     this.props.dispatch(uiActions.toggleRemovedPackages(e.target.checked));
   }
 
-  filterByAuthor(e) {
-    this.props.dispatch(uiActions.filterByAuthor(e.target.value));
+  filterByAuthor([author]) {
+    this.props.dispatch(uiActions.filterByAuthor(author));
   }
 
   render() {
@@ -30,9 +31,15 @@ class App extends Component {
             <label className="form-check-label"><input type="checkbox" defaultChecked={this.showRemoved} onChange={this.toggleRemovedPackages.bind(this)} /> Show removed</label>
           </div>
           <div className="form-group row">
-            <label htmlFor="text-filter" className="col-3 col-form-label">Filter by username</label>
+            <label className="col-3 col-form-label">Filter by username</label>
             <div className="col-9">
-              <input className="form-control" placeholder="Type text..." onChange={this.filterByAuthor.bind(this)} />
+              <Typeahead
+                  highlightOnlyResult={true}
+                  options={this.props.ui.authors}
+                  onChange={this.filterByAuthor.bind(this)}
+                  placeholder="Choose the user"
+                  selectHintOnEnter={true}
+                />
             </div>
           </div>
           {

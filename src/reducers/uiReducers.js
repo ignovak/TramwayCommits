@@ -5,6 +5,11 @@ export default (state = {}, action) => {
         ...state,
         author: action.author
       };
+    case 'LOAD_AUTHORS':
+      return {
+        ...state,
+        authors: action.authors
+      };
     case 'TOGGLE_EXPAND_CARDS':
       return {
         ...state,

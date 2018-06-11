@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
 import * as packageActions from './actions/packageActions';
+import * as uiActions from './actions/uiActions';
 import configureStore from './store';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -10,7 +11,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 registerServiceWorker();
 
-const store = configureStore();
+const store = configureStore({
+  ui: {
+    authors: []
+  }
+});
 
 ReactDOM.render(
   <Provider store={store}>
@@ -44,11 +49,13 @@ Promise.all([
       set.delete(item);
     }
   });
+  const authors = new Set();
   const data = Object.entries(commitData).slice(0, 1000)
     .map(([packageName, commits]) => {
       commits.forEach(_ => {
         _.date = _.date.replace(/ .*/, '')
         _.isRemoved = rejectedCommits.has(_.commit);
+        authors.add(_.author);
       });
       return {
         packageName,
@@ -56,5 +63,6 @@ Promise.all([
         isRemoved: rejectedPackages.has(packageName)
       };
     });
+  store.dispatch(uiActions.loadAuthors([...authors].sort()));
   store.dispatch(packageActions.loadData(data));
 });
