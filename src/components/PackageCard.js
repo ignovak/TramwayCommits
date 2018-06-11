@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Panel, Table } from 'react-bootstrap';
+import { connect } from 'react-redux';
 import CommitLine from './CommitLine';
 
 class PackageCard extends Component {
@@ -12,14 +13,14 @@ class PackageCard extends Component {
 
   render() {
     return (
-      <Panel defaultExpanded onToggle={this.onToggle}>
+      <Panel expanded={this.props.isExpanded} onToggle={this.onToggle}>
         <Panel.Heading>
           <Panel.Title>
             <Panel.Toggle className="h3" componentClass="a">{this.props.name}</Panel.Toggle>
-            <label className="form-check-label"><input type="checkbox" v-model="commit.isRemoved" change="toggleCommit(commit)" /> Is removed</label>
+            <label className="form-check-label"><input type="checkbox" checked={this.props.isRemoved} change="toggleCommit(commit)" /> Is removed</label>
           </Panel.Title>
         </Panel.Heading>
-        <Panel.Collapse>
+        <Panel.Collapse timeout={0}>
           <Panel.Body>
             <Table hover>
               <tbody>
@@ -33,4 +34,4 @@ class PackageCard extends Component {
   }
 }
 
-export default PackageCard;
+export default connect(state => ({ isExpanded: state.ui.isExpanded }))(PackageCard);

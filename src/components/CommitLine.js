@@ -13,7 +13,7 @@ class CommitLine extends Component {
           <a href={this.commitUrl()}>{commit.commit}</a>
         </td>
         <td>{commit.author}</td>
-        <td>{commit.date.replace(/ .*/, '')}</td>
+        <td>{commit.date}</td>
         <td>{commit.description}</td>
         <td>
           <label className="form-check-label"><input type="checkbox" v-model="commit.isRemoved" change="toggleCommit(commit)" /> Is removed</label>

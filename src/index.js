@@ -1,11 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import App from './App';
+import configureStore from './store';
 import registerServiceWorker from './registerServiceWorker';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
 registerServiceWorker();
+
+const store = configureStore();
 
 function fetchData (url) {
   return new Promise((resolve, reject) => {
@@ -32,7 +36,7 @@ Promise.all([
       set.delete(item);
     }
   });
-  const data = Object.entries(commitData)
+  const data = Object.entries(commitData).slice(0, 10)
     .map(([packageName, commits]) => {
       commits.forEach(_ => {
         _.date = _.date.replace(/ .*/, '')
@@ -45,7 +49,11 @@ Promise.all([
       };
     });
 
-  ReactDOM.render(<App data={data} />, document.getElementById('root'));
-
+  ReactDOM.render(
+    <Provider store={store}>
+      <App data={data} />
+    </Provider>,
+    document.getElementById('root')
+  );
 
 });
