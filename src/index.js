@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import App from './App';
+import * as packageActions from './actions/packageActions';
 import configureStore from './store';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -10,6 +11,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 registerServiceWorker();
 
 const store = configureStore();
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root')
+);
 
 function fetchData (url) {
   return new Promise((resolve, reject) => {
@@ -48,12 +56,5 @@ Promise.all([
         isRemoved: rejectedPackages.has(packageName)
       };
     });
-
-  ReactDOM.render(
-    <Provider store={store}>
-      <App data={data} />
-    </Provider>,
-    document.getElementById('root')
-  );
-
+  store.dispatch(packageActions.loadData(data));
 });

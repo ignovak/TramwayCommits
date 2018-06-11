@@ -27,11 +27,11 @@ class App extends Component {
               <input className="form-control" placeholder="Type text..." v-model="filters.username" input="update" />
             </div>
           </div>
-          {this.props.data.map(({ packageName, commits }) => <PackageCard key={packageName} name={packageName} data={commits} />)}
+          {this.props.data.map(({ packageName, commits, isRemoved }) => <PackageCard key={packageName} name={packageName} data={commits} isRemoved={isRemoved} />)}
         </div>
       </div>
     );
   }
 }
 
-export default connect(state => ({ isExpanded: state.ui.isExpanded }))(App);
+export default connect(state => ({ data: state.packageData, isExpanded: state.ui.isExpanded }))(App);
