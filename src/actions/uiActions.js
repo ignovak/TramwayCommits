@@ -1,3 +1,10 @@
+export const addUser = (user) => {
+  return {
+    type: 'ADD_USER',
+    user
+  }
+}
+
 export const filterByAuthor = author => {
   return {
     type: 'FILTER_BY_AUTHOR',

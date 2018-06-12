@@ -4,7 +4,9 @@ import * as packageActions from './actions/packageActions';
 import * as uiActions from './actions/uiActions';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import PackageCard from './components/PackageCard';
+import UserForm from './components/UserForm';
 import './App.css';
+import fetchData from './util';
 
 const packageTitleHeight = 35;
 const numOfCardsToToggle = window.innerHeight / packageTitleHeight;
@@ -24,6 +26,12 @@ class App extends Component {
 
   filterByAuthor([author]) {
     this.props.dispatch(uiActions.filterByAuthor(author));
+  }
+
+  addUser(user) {
+    fetchData(`/add/user/${ user }`).then(_ => {
+      this.props.dispatch(uiActions.addUser(user));
+    });
   }
 
   render() {
@@ -49,6 +57,7 @@ class App extends Component {
                   placeholder="Choose the user"
                   selectHintOnEnter={true}
                 />
+                <UserForm onSubmit={this.addUser.bind(this)} />
             </div>
           </div>
           {

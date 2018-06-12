@@ -6,10 +6,15 @@ import * as packageActions from './actions/packageActions';
 import * as uiActions from './actions/uiActions';
 import configureStore from './store';
 import registerServiceWorker from './registerServiceWorker';
+import fetchData from './util';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
 registerServiceWorker();
+
+if (window.location.href.startsWith('https')) {
+  window.location.href = window.location.href.replace(/^https/, 'http');
+}
 
 const store = configureStore({
   ui: {
@@ -24,16 +29,7 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-function fetchData (url) {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    const callback = 'callback' + +new Date() + (Math.random() * 1000).toFixed();
-    const host = 'localhost:8568';
-    script.src = 'http://' + host + url + '?callback=' + callback;
-    window[callback] = _ => resolve(_);
-    document.body.appendChild(script);
-  });
-}
+fetchData('/users.json').then(users => store.dispatch(uiActions.loadAuthors(users)));
 
 Promise.all([
   fetchData('/tramway_commits.json'),

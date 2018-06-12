@@ -3,6 +3,7 @@ import { Panel, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import * as packageActions from '../actions/packageActions';
 import CommitLine from './CommitLine';
+import fetchData from '../util';
 
 class PackageCard extends Component {
   constructor(props) {
@@ -16,11 +17,17 @@ class PackageCard extends Component {
   }
 
   onChange(e) {
-    this.props.dispatch(packageActions.togglePackage(this.props.packageName, e.target.checked));
+    const packageName = this.props.packageName;
+    const isRemoved = e.target.checked;
+    fetchData(`/${ isRemoved ? 'remove' : 'restore' }/package/${ packageName }`).then(_ => {
+      this.props.dispatch(packageActions.togglePackage(packageName, isRemoved));
+    });
   }
 
   onCommitChange(commit, isRemoved) {
-    this.props.dispatch(packageActions.toggleCommit(commit, isRemoved));
+    fetchData(`/${ isRemoved ? 'remove' : 'restore' }/commit/${ commit }`).then(_ => {
+      this.props.dispatch(packageActions.toggleCommit(commit, isRemoved));
+    });
   }
 
   render() {

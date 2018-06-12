@@ -1,5 +1,10 @@
 export default (state = {}, action) => {
   switch (action.type) {
+    case 'ADD_USER':
+      return {
+        ...state,
+        authors: [...state.authors, action.user].sort()
+      };
     case 'FILTER_BY_AUTHOR':
       return {
         ...state,
