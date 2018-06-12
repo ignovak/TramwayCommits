@@ -1,5 +1,17 @@
 export default (state = [], action) => {
   switch (action.type) {
+    case 'ADD_COMMIT':
+      const data = [...state];
+      const item = state.find(_ => _.packageName === action.packageName);
+      if (item) {
+        item.commits = [...item.commits, { commit: action.commit }];
+      } else {
+        data.push({
+          packageName: action.packageName,
+          commits: [{ commit: action.commit }]
+        });
+      }
+      return data;
     case 'LOAD_DATA':
       return [
         ...state,

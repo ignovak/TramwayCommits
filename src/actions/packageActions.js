@@ -1,3 +1,11 @@
+export const addCommit = (packageName, commit) => {
+  return {
+    type: 'ADD_COMMIT',
+    packageName,
+    commit
+  }
+}
+
 export const toggleCommit = (commit, isRemoved) => {
   return {
     type: 'TOGGLE_COMMIT',

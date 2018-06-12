@@ -4,6 +4,7 @@ import * as packageActions from './actions/packageActions';
 import * as uiActions from './actions/uiActions';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import PackageCard from './components/PackageCard';
+import CommitForm from './components/CommitForm';
 import UserForm from './components/UserForm';
 import './App.css';
 import fetchData from './util';
@@ -34,6 +35,12 @@ class App extends Component {
     });
   }
 
+  addCommit(packageName, commit) {
+    fetchData(`/add/commit/${ packageName }/${ commit }`).then(_ => {
+      this.props.dispatch(packageActions.addCommit(packageName, commit));
+    });
+  }
+
   render() {
     return (
       <div className="card">
@@ -60,6 +67,7 @@ class App extends Component {
                 <UserForm onSubmit={this.addUser.bind(this)} />
             </div>
           </div>
+          <CommitForm onSubmit={this.addCommit.bind(this)} />
           {
             this.props.data
               .filter(data => (!this.props.ui.author || data.commits.some(_ => _.author === this.props.ui.author)) && (this.props.ui.showRemoved || !data.isRemoved || data.recentlyUpdated))
