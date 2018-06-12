@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
 
 class CommitLine extends Component {
-  commitUrl(packageName, commit) {
-    return `https://code.amazon.com/packages/${this.props.packageName}/commits/${this.props.data.commit}`;
+  commitUrl() {
+    return `https://code.amazon.com/packages/${this.props.packageName}/commits/${this.props.commit}`;
+  }
+
+  onChange(e) {
+    this.props.onChange(this.props.commit, e.target.checked);
   }
 
   render() {
-    const commit = this.props.data;
     return (
       <tr>
         <td>
-          <a href={this.commitUrl()}>{commit.commit}</a>
+          <a href={this.commitUrl()}>{this.props.commit}</a>
         </td>
-        <td>{commit.author}</td>
-        <td>{commit.date}</td>
-        <td>{commit.description}</td>
+        <td>{this.props.author}</td>
+        <td>{this.props.date}</td>
+        <td>{this.props.description}</td>
         <td>
-          <label className="form-check-label"><input type="checkbox" v-model="commit.isRemoved" change="toggleCommit(commit)" /> Is removed</label>
+          <label className="form-check-label">
+            <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Is removed
+          </label>
         </td>
       </tr>
     )

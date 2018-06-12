@@ -19,6 +19,10 @@ class PackageCard extends Component {
     this.props.dispatch(packageActions.togglePackage(this.props.packageName, e.target.checked));
   }
 
+  onCommitChange(commit, isRemoved) {
+    this.props.dispatch(packageActions.toggleCommit(commit, isRemoved));
+  }
+
   render() {
     return (
       <Panel expanded={this.props.isExpanded} onToggle={this.toggleExpandCard.bind(this)}>
@@ -34,7 +38,7 @@ class PackageCard extends Component {
           <Panel.Body>
             <Table hover>
               <tbody>
-                {this.props.commits.map(_ => <CommitLine key={_.commit} packageName={this.props.packageName} data={_} />)}
+                {this.props.commits.map(data => <CommitLine {...data} key={data.commit} packageName={this.props.packageName} onChange={this.onCommitChange.bind(this)} />)}
               </tbody>
             </Table>
           </Panel.Body>

@@ -14,7 +14,7 @@ class App extends Component {
     const isExpanded = e.target.checked;
     // TODO: use redux-saga / redux-thunk for async operation
     for (let i = 0, start = 0, end = numOfCardsToToggle; start < this.props.data.length; i++, start = end, end += numOfCardsToToggle) {
-      setTimeout(_ => this.props.dispatch(packageActions.toggleExpandCards(isExpanded, start, end)), 100 * i);
+      setTimeout(_ => this.props.dispatch(packageActions.toggleExpandCards(isExpanded, start, end)), 50 * i);
     }
   }
 
@@ -42,6 +42,7 @@ class App extends Component {
             <label className="col-3 col-form-label">Filter by username</label>
             <div className="col-9">
               <Typeahead
+                  defaultInputValue={this.props.ui.author}
                   highlightOnlyResult={true}
                   options={this.props.ui.authors}
                   onChange={this.filterByAuthor.bind(this)}

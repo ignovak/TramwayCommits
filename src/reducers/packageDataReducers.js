@@ -5,6 +5,10 @@ export default (state = [], action) => {
         ...state,
         ...action.data
       ];
+    case 'TOGGLE_COMMIT':
+      return state.map(_ => {
+        return { ..._, commits: _.commits.map(_ => _.commit === action.commit ? { ..._, isRemoved: action.isRemoved } : _) };
+      });
     case 'TOGGLE_EXPAND_CARD':
       return state.map(_ => _.packageName === action.packageName ? { ..._, isExpanded: action.isExpanded } : _);
     case 'TOGGLE_EXPAND_CARDS':

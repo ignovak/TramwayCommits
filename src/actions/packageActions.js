@@ -1,3 +1,11 @@
+export const toggleCommit = (commit, isRemoved) => {
+  return {
+    type: 'TOGGLE_COMMIT',
+    commit,
+    isRemoved
+  }
+}
+
 export const toggleExpandCard = (isExpanded, packageName) => {
   return {
     type: 'TOGGLE_EXPAND_CARD',
