@@ -5,13 +5,23 @@ import * as packageActions from '../actions/packageActions';
 import CommitLine from './CommitLine';
 
 class PackageCard extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+    };
+  }
+
+  toggleExpandCard(open) {
+    this.props.dispatch(packageActions.toggleExpandCards(open, this.props.packageName));
+  }
+
   onChange(e) {
     this.props.dispatch(packageActions.togglePackage(this.props.packageName, e.target.checked));
   }
 
   render() {
     return (
-      <Panel expanded={this.props.isExpanded} onToggle={_ => _}>
+      <Panel expanded={this.props.isExpanded} onToggle={this.toggleExpandCard.bind(this)}>
         <Panel.Heading>
           <Panel.Title>
             <Panel.Toggle className="h3" componentClass="a">{this.props.packageName}</Panel.Toggle>

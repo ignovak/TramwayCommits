@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import * as packageActions from './actions/packageActions';
 import * as uiActions from './actions/uiActions';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import PackageCard from './components/PackageCard';
@@ -7,7 +8,7 @@ import './App.css';
 
 class App extends Component {
   toggleExpandCards(e) {
-    this.props.dispatch(uiActions.toggleExpandCards(e.target.checked));
+    this.props.dispatch(packageActions.toggleExpandCards(e.target.checked));
   }
 
   toggleRemovedPackages(e) {

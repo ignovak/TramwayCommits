@@ -10,11 +10,6 @@ export default (state = {}, action) => {
         ...state,
         authors: action.authors
       };
-    case 'TOGGLE_EXPAND_CARDS':
-      return {
-        ...state,
-        isExpanded: action.isExpanded
-      };
     case 'TOGGLE_REMOVED_PACKAGES':
       return {
         ...state,
