@@ -12,7 +12,7 @@ class PackageCard extends Component {
   }
 
   toggleExpandCard(open) {
-    this.props.dispatch(packageActions.toggleExpandCards(open, this.props.packageName));
+    this.props.dispatch(packageActions.toggleExpandCard(open, this.props.packageName));
   }
 
   onChange(e) {

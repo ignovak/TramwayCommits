@@ -6,9 +6,16 @@ import { Typeahead } from 'react-bootstrap-typeahead';
 import PackageCard from './components/PackageCard';
 import './App.css';
 
+const packageTitleHeight = 35;
+const numOfCardsToToggle = window.innerHeight / packageTitleHeight;
+
 class App extends Component {
   toggleExpandCards(e) {
-    this.props.dispatch(packageActions.toggleExpandCards(e.target.checked));
+    const isExpanded = e.target.checked;
+    // TODO: use redux-saga / redux-thunk for async operation
+    for (let i = 0, start = 0, end = numOfCardsToToggle; start < this.props.data.length; i++, start = end, end += numOfCardsToToggle) {
+      setTimeout(_ => this.props.dispatch(packageActions.toggleExpandCards(isExpanded, start, end)), 100 * i);
+    }
   }
 
   toggleRemovedPackages(e) {

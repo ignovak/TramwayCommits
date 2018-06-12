@@ -1,7 +1,16 @@
-export const toggleExpandCards = (isExpanded, packageName) => {
+export const toggleExpandCard = (isExpanded, packageName) => {
+  return {
+    type: 'TOGGLE_EXPAND_CARD',
+    packageName,
+    isExpanded
+  };
+}
+
+export const toggleExpandCards = (isExpanded, start, end) => {
   return {
     type: 'TOGGLE_EXPAND_CARDS',
-    packageName,
+    start,
+    end,
     isExpanded
   };
 }
