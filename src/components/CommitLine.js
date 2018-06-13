@@ -19,7 +19,7 @@ class CommitLine extends Component {
           {this.props.author}
         </td>
         <td className="commit-date">{this.props.date}</td>
-        <td>{this.props.description}</td>
+        <td dangerouslySetInnerHTML={{ __html: this.props.description }}></td>
         <td className="commit-is-removed">
           <label className="form-check-label">
             <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Marked as hidden

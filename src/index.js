@@ -59,6 +59,7 @@ Promise.all([
       commits.forEach(_ => {
         _.date = _.date.replace(/ .*/, '')
         _.isRemoved = rejectedCommits.has(_.commit);
+        _.description = _.description.replace(/https?:\/\/(\S+)/g, '<a href="$&">$1</a>');
       });
       return {
         packageName,
