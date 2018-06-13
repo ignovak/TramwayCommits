@@ -18,7 +18,8 @@ if (window.location.href.startsWith('https')) {
 
 const store = configureStore({
   ui: {
-    authors: []
+    authors: [],
+    author: window.location.hash.replace('#', '')
   }
 });
 

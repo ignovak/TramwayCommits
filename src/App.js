@@ -27,6 +27,7 @@ class App extends Component {
 
   filterByAuthor([author]) {
     this.props.dispatch(uiActions.filterByAuthor(author));
+    window.location.hash = `#${ author || '' }`;
   }
 
   addUser(user) {
@@ -51,11 +52,11 @@ class App extends Component {
             </label>
           </div>
           <div className="form-check form-check-inline">
-            <label className="form-check-label"><input type="checkbox" defaultChecked={this.showRemoved} onChange={this.toggleRemovedPackages.bind(this)} /> Show removed</label>
+            <label className="form-check-label"><input type="checkbox" defaultChecked={this.showRemoved} onChange={this.toggleRemovedPackages.bind(this)} /> Show hidden packages</label>
           </div>
           <div className="form-group row">
-            <label className="col-3 col-form-label">Filter by username</label>
-            <div className="col-9">
+            <label className="col-2 col-form-label">Filter by username</label>
+            <div className="col-10">
               <Typeahead
                   defaultInputValue={this.props.ui.author}
                   highlightOnlyResult={true}
