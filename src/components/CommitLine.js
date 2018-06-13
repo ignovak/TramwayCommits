@@ -12,15 +12,15 @@ class CommitLine extends Component {
   render() {
     return (
       <tr>
-        <td>
+        <td className="commit-id">
           <a href={this.commitUrl()}>{this.props.commit}</a>
         </td>
-        <td>{this.props.author}</td>
-        <td>{this.props.date}</td>
+        <td className="commit-author">{this.props.author}</td>
+        <td className="commit-date">{this.props.date}</td>
         <td>{this.props.description}</td>
-        <td>
+        <td className="commit-is-removed">
           <label className="form-check-label">
-            <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Is removed
+            <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Marked as hidden
           </label>
         </td>
       </tr>

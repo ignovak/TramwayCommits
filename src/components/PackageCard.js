@@ -37,7 +37,7 @@ class PackageCard extends Component {
           <Panel.Title>
             <Panel.Toggle className="h3" componentClass="a">{this.props.packageName}</Panel.Toggle>
             <label className="form-check-label">
-              <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Is removed
+              <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Marked as hidden
             </label>
           </Panel.Title>
         </Panel.Heading>
