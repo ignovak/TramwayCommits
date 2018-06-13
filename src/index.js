@@ -33,10 +33,17 @@ fetchData('/users.json').then(users => store.dispatch(uiActions.loadAuthors(user
 
 Promise.all([
   fetchData('/tramway_commits.json'),
-  fetchData('/amends.json')
-]).then(([commitData, amendData]) => {
+  fetchData('/amends.json'),
+  fetchData('/commits.json')
+]).then(([commitData, amendData, additionalCommits]) => {
   const rejectedPackages = new Set();
   const rejectedCommits = new Set();
+  additionalCommits.forEach(item => {
+    if (!commitData[item.package]) {
+      commitData[item.package] = [];
+    }
+    commitData[item.package].push({ commit: item.commit, date: '' });
+  });
   amendData.forEach(_ => {
     const [set, item] = _.package ? [rejectedPackages, _.package] : [rejectedCommits, _.commit];
     if (_.action === 'remove') {
@@ -45,20 +52,19 @@ Promise.all([
       set.delete(item);
     }
   });
-  const authors = new Set();
-  const data = Object.entries(commitData).slice(0, 1000)
+  const data = Object.entries(commitData)
+    .slice(0, 1000)
     .map(([packageName, commits]) => {
       commits.forEach(_ => {
         _.date = _.date.replace(/ .*/, '')
         _.isRemoved = rejectedCommits.has(_.commit);
-        authors.add(_.author);
       });
       return {
         packageName,
         commits,
         isRemoved: rejectedPackages.has(packageName)
       };
-    });
-  store.dispatch(uiActions.loadAuthors([...authors].sort()));
+    })
+    .sort((a, b) => a.packageName.localeCompare(b.packageName));
   store.dispatch(packageActions.loadData(data));
 });

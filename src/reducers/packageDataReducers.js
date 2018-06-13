@@ -10,6 +10,7 @@ export default (state = [], action) => {
           packageName: action.packageName,
           commits: [{ commit: action.commit }]
         });
+        data.sort((a, b) => a.packageName.localeCompare(b.packageName));
       }
       return data;
     case 'LOAD_DATA':
