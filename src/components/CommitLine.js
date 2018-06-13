@@ -15,7 +15,9 @@ class CommitLine extends Component {
         <td className="commit-id">
           <a href={this.commitUrl()}>{this.props.commit}</a>
         </td>
-        <td className="commit-author">{this.props.author}</td>
+        <td className={`commit-author ${this.props.author === this.props.currentAuthor ? 'font-weight-bold' : ''}`}>
+          {this.props.author}
+        </td>
         <td className="commit-date">{this.props.date}</td>
         <td>{this.props.description}</td>
         <td className="commit-is-removed">

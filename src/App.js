@@ -72,7 +72,7 @@ class App extends Component {
           {
             this.props.data
               .filter(data => (!this.props.ui.author || data.commits.some(_ => _.author === this.props.ui.author)) && (this.props.ui.showRemoved || !data.isRemoved || data.recentlyUpdated))
-              .map(data => <PackageCard {...data} key={data.packageName} />)
+              .map(data => <PackageCard {...data} key={data.packageName} currentAuthor={this.props.ui.author} />)
           }
         </div>
       </div>

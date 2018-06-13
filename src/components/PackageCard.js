@@ -45,7 +45,17 @@ class PackageCard extends Component {
           <Panel.Body>
             <Table hover>
               <tbody>
-                {this.props.commits.map(data => <CommitLine {...data} key={data.commit} packageName={this.props.packageName} onChange={this.onCommitChange.bind(this)} />)}
+                {
+                  this.props.commits.map(data =>
+                    <CommitLine
+                      {...data}
+                      currentAuthor={this.props.currentAuthor}
+                      key={data.commit}
+                      onChange={this.onCommitChange.bind(this)}
+                      packageName={this.props.packageName}
+                    />
+                  )
+                }
               </tbody>
             </Table>
           </Panel.Body>
