@@ -55,7 +55,7 @@ class App extends Component {
             <label className="form-check-label"><input type="checkbox" defaultChecked={this.showRemoved} onChange={this.toggleRemovedPackages.bind(this)} /> Show hidden packages</label>
           </div>
           <div className="form-group row">
-            <label className="col-2 col-form-label">Filter by username</label>
+            <label className="col-2 col-form-label">Filter packages by username</label>
             <div className="col-10">
               <Typeahead
                   defaultInputValue={this.props.ui.author}
