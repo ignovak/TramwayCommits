@@ -28,7 +28,7 @@ class UserForm extends Component {
       <Panel>
         <Panel.Heading>
           <Panel.Title toggle>
-            <small className="form-text text-muted">Add more users?</small>
+            <small className="text-muted">Add more users?</small>
           </Panel.Title>
         </Panel.Heading>
         <Panel.Collapse>

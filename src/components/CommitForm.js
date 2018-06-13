@@ -35,7 +35,7 @@ class CommitForm extends Component {
       <Panel>
         <Panel.Heading>
           <Panel.Title toggle>
-            <small className="form-text text-muted">Add more commits?</small>
+            <small className="text-muted">Add more commits?</small>
           </Panel.Title>
         </Panel.Heading>
         <Panel.Collapse>
