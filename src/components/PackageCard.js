@@ -1,15 +1,26 @@
 import React, { Component } from 'react';
 import { Panel, Table } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { WithContext as ReactTags } from 'react-tag-input';
 import * as packageActions from '../actions/packageActions';
 import CommitLine from './CommitLine';
 import fetchData from '../util';
+import './PackageCard.css';
 
 class PackageCard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      tags: this.props.tags.map(_ => ({ id: _, text: _ }))
     };
+  }
+
+  handleTagAddition(tag) {
+    this.setState({ tags: [...this.state.tags, tag] });
+  }
+
+  handleTagDelete(index) {
+    this.setState({ tags: this.state.tags.filter((_, i) => i !== index) });
   }
 
   toggleExpandCard(open) {
@@ -32,10 +43,17 @@ class PackageCard extends Component {
 
   render() {
     return (
-      <Panel expanded={this.props.isExpanded} onToggle={this.toggleExpandCard.bind(this)}>
+      <Panel className="package-card" expanded={this.props.isExpanded} onToggle={this.toggleExpandCard.bind(this)}>
         <Panel.Heading>
           <Panel.Title>
             <Panel.Toggle className="h3" componentClass="a">{this.props.packageName}</Panel.Toggle>
+            <ReactTags
+              allowDeleteFromEmptyInput={false}
+              handleAddition={this.handleTagAddition.bind(this)}
+              handleDelete={this.handleTagDelete.bind(this)}
+              minQueryLength={0}
+              tags={this.state.tags}
+            />
             <label className="form-check-label">
               <input type="checkbox" checked={this.props.isRemoved} onChange={this.onChange.bind(this)} /> Marked as hidden
             </label>

@@ -1,0 +1,72 @@
+@import 'bootstrap/scss/bootstrap.scss';
+
+.package-card {
+
+  .panel-title {
+    position: relative;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.025);
+    }
+
+  }
+
+  .h3 {
+    cursor: pointer;
+  }
+
+  .form-check-label {
+    position: absolute;
+    right: 12px;
+  }
+
+}
+
+/* Fix for bootstrap4 vs bootstrap3 */
+.panel-collapse.collapse.in {
+  display: block;
+}
+
+.commit-id, .commit-author, .commit-date, .commit-is-removed {
+  white-space: nowrap;
+}
+
+.commit-is-removed {
+  text-align: right;
+}
+
+.ReactTags__tags {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+  vertical-align: super;
+
+  .ReactTags__tag {
+    @extend .badge;
+    @extend .badge-pill;
+    @extend .badge-warning;
+    margin: 0 5px;
+
+    .ReactTags__remove {
+      color: #aaa;
+      margin-left: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .ReactTags__tagInput {
+    display: inline-block;
+
+    .ReactTags__tagInputField,
+    .ReactTags__tagInputField:focus {
+      height: 22px;
+      font-size: 12px;
+      border: 1px solid #eee;
+    }
+  }
+
+  .ReactTags__tagInputField {
+    @extend .form-control;
+    @extend .form-control-sm;
+  }
+}

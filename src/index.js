@@ -8,8 +8,6 @@ import configureStore from './store';
 import registerServiceWorker from './registerServiceWorker';
 import fetchData from './util';
 
-import 'bootstrap/dist/css/bootstrap.css';
-
 registerServiceWorker();
 
 if (window.location.href.startsWith('https')) {
@@ -35,8 +33,9 @@ fetchData('/users.json').then(users => store.dispatch(uiActions.loadAuthors(user
 Promise.all([
   fetchData('/tramway_commits.json'),
   fetchData('/amends.json'),
-  fetchData('/commits.json')
-]).then(([commitData, amendData, additionalCommits]) => {
+  fetchData('/commits.json'),
+  fetchData('/tags.json')
+]).then(([commitData, amendData, additionalCommits, tags]) => {
   const rejectedPackages = new Set();
   const rejectedCommits = new Set();
   additionalCommits.forEach(item => {
@@ -59,12 +58,13 @@ Promise.all([
       commits.forEach(_ => {
         _.date = _.date.replace(/ .*/, '')
         _.isRemoved = rejectedCommits.has(_.commit);
-        _.description = _.description.replace(/https?:\/\/(\S+)/g, '<a href="$&">$1</a>');
+        _.description = (_.description || '').replace(/https?:\/\/(\S+)/g, '<a href="$&">$1</a>');
       });
       return {
         packageName,
         commits,
-        isRemoved: rejectedPackages.has(packageName)
+        isRemoved: rejectedPackages.has(packageName),
+        tags: ['search', 'detail page', 'navigation']
       };
     })
     .sort((a, b) => a.packageName.localeCompare(b.packageName));
