@@ -6,6 +6,22 @@ export const addCommit = (packageName, commit) => {
   }
 }
 
+export const addTag = (packageName, tag) => {
+  return {
+    type: 'ADD_TAG',
+    packageName,
+    tag
+  }
+}
+
+export const deleteTag = (packageName, tag) => {
+  return {
+    type: 'DELETE_TAG',
+    packageName,
+    tag
+  }
+}
+
 export const toggleCommit = (commit, isRemoved) => {
   return {
     type: 'TOGGLE_COMMIT',

@@ -20,6 +20,11 @@ export default (state = {}, action) => {
         ...state,
         showRemoved: action.showRemoved
       };
+    case 'UPDATE_TAGS':
+      return {
+        ...state,
+        suggestions: new Set([...state.suggestions, ...action.tags])
+      };
     default:
       return state;
   }

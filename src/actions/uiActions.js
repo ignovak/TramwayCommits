@@ -25,3 +25,10 @@ export const toggleRemovedPackages = showRemoved => {
     showRemoved
   }
 }
+
+export const updateTags = tags => {
+  return {
+    type: 'UPDATE_TAGS',
+    tags
+  }
+}

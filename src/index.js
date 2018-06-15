@@ -17,7 +17,8 @@ if (window.location.href.startsWith('https')) {
 const store = configureStore({
   ui: {
     authors: [],
-    author: window.location.hash.replace('#', '')
+    author: window.location.hash.replace('#', ''),
+    suggestions: []
   }
 });
 
@@ -35,7 +36,7 @@ Promise.all([
   fetchData('/amends.json'),
   fetchData('/commits.json'),
   fetchData('/tags.json')
-]).then(([commitData, amendData, additionalCommits, tags]) => {
+]).then(([commitData, amendData, additionalCommits, tagsData]) => {
   const rejectedPackages = new Set();
   const rejectedCommits = new Set();
   additionalCommits.forEach(item => {
@@ -52,6 +53,19 @@ Promise.all([
       set.delete(item);
     }
   });
+  const tags = {};
+  const suggestions = new Set();
+  tagsData.forEach(_ => {
+    if (!tags[_.package]) {
+      tags[_.package] = new Set();
+    }
+    if (_.action === 'add') {
+      tags[_.package].add(_.tag);
+      suggestions.add(_.tag);
+    } else {
+      tags[_.package].delete(_.tag);
+    }
+  });
   const data = Object.entries(commitData)
     .slice(0, 1000)
     .map(([packageName, commits]) => {
@@ -64,9 +78,10 @@ Promise.all([
         packageName,
         commits,
         isRemoved: rejectedPackages.has(packageName),
-        tags: ['search', 'detail page', 'navigation']
+        tags: [...(tags[packageName] || [])]
       };
     })
     .sort((a, b) => a.packageName.localeCompare(b.packageName));
   store.dispatch(packageActions.loadData(data));
+  store.dispatch(uiActions.updateTags(suggestions));
 });

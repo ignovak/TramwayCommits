@@ -13,6 +13,14 @@ export default (state = [], action) => {
         data.sort((a, b) => a.packageName.localeCompare(b.packageName));
       }
       return data;
+    case 'ADD_TAG':
+      return state.map(_ => {
+        return { ..._, tags: _.packageName === action.packageName ? [..._.tags, action.tag] : _.tags };
+      });
+    case 'DELETE_TAG':
+      return state.map(_ => {
+        return { ..._, tags: _.packageName === action.packageName ? [..._.tags.filter(_ => _ !== action.tag)] : _.tags };
+      });
     case 'LOAD_DATA':
       return [
         ...state,

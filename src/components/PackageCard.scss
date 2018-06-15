@@ -36,7 +36,6 @@
 }
 
 .ReactTags__tags {
-  position: relative;
   display: inline-block;
   margin-left: 10px;
   vertical-align: super;
@@ -69,4 +68,30 @@
     @extend .form-control;
     @extend .form-control-sm;
   }
+
+  .ReactTags__suggestions {
+    position: absolute;
+    z-index: 1;
+
+    ul {
+      @extend .list-group;
+      width: 200px;
+    }
+
+    li {
+      @extend .list-group-item;
+      font-size: 12px;
+      padding: 5px 10px;
+    }
+
+    mark {
+      padding: 0;
+    }
+
+    .ReactTags__activeSuggestion {
+      background: #b7cfe0;
+      cursor: pointer;
+    }
+  }
+
 }
