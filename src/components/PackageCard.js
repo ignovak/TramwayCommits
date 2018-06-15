@@ -52,6 +52,7 @@ class PackageCard extends Component {
             <Panel.Toggle className="h3" componentClass="a">{this.props.packageName}</Panel.Toggle>
             <ReactTags
               allowDeleteFromEmptyInput={false}
+              autofocus={false}
               handleAddition={this.handleTagAddition.bind(this)}
               handleDelete={this.handleTagDelete.bind(this)}
               minQueryLength={0}
