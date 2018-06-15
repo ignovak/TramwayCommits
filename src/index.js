@@ -18,7 +18,8 @@ const store = configureStore({
   ui: {
     authors: [],
     author: window.location.hash.replace('#', ''),
-    suggestions: []
+    suggestions: [],
+    tag: ''
   }
 });
 

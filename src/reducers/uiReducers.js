@@ -10,6 +10,11 @@ export default (state = {}, action) => {
         ...state,
         author: action.author
       };
+    case 'FILTER_BY_TAG':
+      return {
+        ...state,
+        tag: action.tag
+      };
     case 'LOAD_AUTHORS':
       return {
         ...state,

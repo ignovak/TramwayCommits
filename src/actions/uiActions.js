@@ -12,6 +12,13 @@ export const filterByAuthor = author => {
   }
 }
 
+export const filterByTag = tag => {
+  return {
+    type: 'FILTER_BY_TAG',
+    tag
+  }
+}
+
 export const loadAuthors = authors => {
   return {
     type: 'LOAD_AUTHORS',

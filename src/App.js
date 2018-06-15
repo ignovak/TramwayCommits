@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as packageActions from './actions/packageActions';
 import * as uiActions from './actions/uiActions';
-import { Typeahead } from 'react-bootstrap-typeahead';
+import FiltersCard from './components/FiltersCard';
 import PackageCard from './components/PackageCard';
 import CommitForm from './components/CommitForm';
-import UserForm from './components/UserForm';
 import './App.css';
 import fetchData from './util';
 
@@ -30,6 +29,10 @@ class App extends Component {
     window.location.hash = `#${ author || '' }`;
   }
 
+  filterByTag([tag]) {
+    this.props.dispatch(uiActions.filterByTag(tag));
+  }
+
   addUser(user) {
     fetchData(`/add/user/${ user }`).then(_ => {
       this.props.dispatch(uiActions.addUser(user));
@@ -46,32 +49,24 @@ class App extends Component {
     return (
       <div className="card">
         <div className="card-body">
-          <div className="form-check form-check-inline">
-            <label className="form-check-label">
-              <input type="checkbox" defaultChecked={this.props.ui.isExpanded} onChange={this.toggleExpandCards.bind(this)} /> Expand all
-            </label>
-          </div>
-          <div className="form-check form-check-inline">
-            <label className="form-check-label"><input type="checkbox" defaultChecked={this.showRemoved} onChange={this.toggleRemovedPackages.bind(this)} /> Show hidden packages</label>
-          </div>
-          <div className="form-group row">
-            <label className="col-2 col-form-label">Filter packages by username</label>
-            <div className="col-10">
-              <Typeahead
-                  defaultInputValue={this.props.ui.author}
-                  highlightOnlyResult={true}
-                  options={this.props.ui.authors}
-                  onChange={this.filterByAuthor.bind(this)}
-                  placeholder="Choose the user"
-                  selectHintOnEnter={true}
-                />
-                <UserForm onSubmit={this.addUser.bind(this)} />
-            </div>
-          </div>
+          <FiltersCard
+            ui={this.props.ui}
+            addUser={this.addUser.bind(this)}
+            filterByAuthor={this.filterByAuthor.bind(this)}
+            filterByTag={this.filterByTag.bind(this)}
+            toggleExpandCards={this.toggleExpandCards.bind(this)}
+            toggleRemovedPackages={this.toggleRemovedPackages.bind(this)}
+          />
           <CommitForm onSubmit={this.addCommit.bind(this)} />
           {
             this.props.data
-              .filter(data => (!this.props.ui.author || data.commits.some(_ => _.author === this.props.ui.author)) && (this.props.ui.showRemoved || !data.isRemoved || data.recentlyUpdated))
+              .filter(data =>
+                (!this.props.ui.author || data.commits.some(_ => _.author === this.props.ui.author))
+                &&
+                (!this.props.ui.tag || data.tags.some(_ => _ === this.props.ui.tag))
+                &&
+                (this.props.ui.showRemoved || !data.isRemoved || data.recentlyUpdated)
+              )
               .map(data => <PackageCard {...data} key={data.packageName} currentAuthor={this.props.ui.author} />)
           }
         </div>
