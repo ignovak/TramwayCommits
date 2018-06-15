@@ -9,15 +9,15 @@
       background: rgba(0, 0, 0, 0.025);
     }
 
+    .form-check-label {
+      position: absolute;
+      right: 12px;
+    }
+
   }
 
   .h3 {
     cursor: pointer;
-  }
-
-  .form-check-label {
-    position: absolute;
-    right: 12px;
   }
 
 }

@@ -9,11 +9,12 @@ import fetchData from '../util';
 import './PackageCard.css';
 
 class PackageCard extends Component {
-  handleTagAddition(tag) {
+  handleTagAddition(tagData) {
     const packageName = this.props.packageName;
-    fetchData(`/add/tag/${ packageName }/${ tag.id }`).then(_ => {
-      this.props.dispatch(uiActions.updateTags([tag.id]));
-      this.props.dispatch(packageActions.addTag(packageName, tag.id));
+    const tag = tagData.id.replace(/ +/g, '_');
+    fetchData(`/add/tag/${ packageName }/${ tag }`).then(_ => {
+      this.props.dispatch(uiActions.updateTags([tag]));
+      this.props.dispatch(packageActions.addTag(packageName, tag));
     });
   }
 
