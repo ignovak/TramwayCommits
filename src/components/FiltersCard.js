@@ -35,7 +35,7 @@ class FiltersCard extends Component {
               <Typeahead
                   defaultInputValue={this.props.ui.tag}
                   highlightOnlyResult={true}
-                  options={[...this.props.ui.suggestions]}
+                  options={[...this.props.ui.suggestions].sort()}
                   onChange={this.props.filterByTag}
                   placeholder="Choose the tag"
                   selectHintOnEnter={true}

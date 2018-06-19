@@ -34,7 +34,7 @@ class UserForm extends Component {
         <Panel.Collapse>
           <Panel.Body>
             <form className="form-row" onSubmit={this.onSubmit.bind(this)} hidden={this.state.isSubmitted}>
-              <div className="col-auto col-sm-4">
+              <div className="col-10">
                 <input
                   type="text"
                   className="form-control form-control-sm"

@@ -84,5 +84,5 @@ Promise.all([
     })
     .sort((a, b) => a.packageName.localeCompare(b.packageName));
   store.dispatch(packageActions.loadData(data));
-  store.dispatch(uiActions.updateTags(suggestions));
+  store.dispatch(uiActions.updateTags([...suggestions].sort()));
 });

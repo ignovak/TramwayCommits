@@ -56,7 +56,7 @@ class PackageCard extends Component {
               handleAddition={this.handleTagAddition.bind(this)}
               handleDelete={this.handleTagDelete.bind(this)}
               minQueryLength={0}
-              suggestions={[...this.props.suggestions].map(_ => ({ id: _, text: _ }))}
+              suggestions={[...this.props.suggestions].sort().map(_ => ({ id: _, text: _ }))}
               tags={this.props.tags.map(_ => ({ id: _, text: _ }))}
             />
             <label className="form-check-label">
